@@ -5,9 +5,11 @@ public class Bullet {
     private double velocityY;
     private Ball shape;
     private GameArena arena;
+    private Gun gun;
 
-    public Bullet(GameArena a, double posX, double posY, double velX,
+    public Bullet(GameArena a, Gun g, double posX, double posY, double velX,
                   double velY, double s, String col) {
+        gun = g;
         positionX = posX;
         positionY = posY;
         velocityX = velX;
@@ -37,5 +39,10 @@ public class Bullet {
 
     public Ball getShape() {
         return shape;
+    }
+
+    public void destroy() {
+        gun.getBullets().remove(this);
+        arena.removeBall(shape);
     }
 }

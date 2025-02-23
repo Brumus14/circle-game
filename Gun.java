@@ -49,7 +49,7 @@ public class Gun {
         if (Duration.between(lastShotTime, currentTime).getNano() / 1e9 >=
             cooldown) {
             Bullet bullet = new Bullet(
-                arena, player.getPositionX() + directionX * 100,
+                arena, this, player.getPositionX() + directionX * 100,
                 player.getPositionY() + directionY * 100,
                 directionX * bulletSpeed, directionY * bulletSpeed, 20, "red");
             bullets.add(bullet);
@@ -66,14 +66,13 @@ public class Gun {
 
             if (bullet.getPositionX() < 0 || bullet.getPositionX() > 1600 ||
                 bullet.getPositionY() < 0 || bullet.getPositionY() > 900) {
-                System.out.println("out");
-                arena.removeBall(bullet.getShape());
-
                 bulletsToRemove.add(bullet);
             }
         }
 
-        bullets.removeAll(bulletsToRemove);
+        for (Bullet bullet : bulletsToRemove) {
+            bullet.destroy();
+        }
     }
 
     public List<Bullet> getBullets() {
