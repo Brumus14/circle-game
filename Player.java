@@ -1,5 +1,4 @@
 public class Player {
-<<<<<<< HEAD
     Ball sprite;
     int health;
 
@@ -16,147 +15,146 @@ public class Player {
         health -= damageTaken;
     }
 }
-=======
-    private double positionX;
-    private double positionY;
-    private double speed;
-    private double rotation = 0;
-    private double health;
-    private GameArena arena;
-    private Ball shape;
-    private Ball gunPivot;
-    private Gun gun;
 
-    // maybe make separate gun class
-    public Player(GameArena a, double posX, double posY, double s, double h) {
-        positionX = posX;
-        positionY = posY;
-        speed = s;
-        health = h;
-        arena = a;
+private double positionX;
+private double positionY;
+private double speed;
+private double rotation = 0;
+private double health;
+private GameArena arena;
+private Ball shape;
+private Ball gunPivot;
+private Gun gun;
 
-        shape = new Ball(positionX, positionY, 80, "blue");
-        arena.addBall(shape);
+// maybe make separate gun class
+public Player(GameArena a, double posX, double posY, double s, double h) {
+    positionX = posX;
+    positionY = posY;
+    speed = s;
+    health = h;
+    arena = a;
 
-        gun = new Gun(arena, this, 10, 0.2);
+    shape = new Ball(positionX, positionY, 80, "blue");
+    arena.addBall(shape);
 
-        gunPivot = new Ball(positionX, positionY, 20, "grey");
-        arena.addBall(gunPivot);
+    gun = new Gun(arena, this, 10, 0.2);
+
+    gunPivot = new Ball(positionX, positionY, 20, "grey");
+    arena.addBall(gunPivot);
+}
+
+public void update() {
+    gun.updateBullets();
+    handleInput();
+}
+
+public void handleInput() {
+    if (arena.leftMousePressed()) {
+        gun.shoot();
     }
 
-    public void update() {
-        gun.updateBullets();
-        handleInput();
+    gun.updateRotation();
+
+    double movementDeltaX = 0;
+    double movementDeltaY = 0;
+
+    if (arena.letterPressed('W')) {
+        movementDeltaY -= 1;
     }
 
-    public void handleInput() {
-        if (arena.leftMousePressed()) {
-            gun.shoot();
-        }
-
-        gun.updateRotation();
-
-        double movementDeltaX = 0;
-        double movementDeltaY = 0;
-
-        if (arena.letterPressed('W')) {
-            movementDeltaY -= 1;
-        }
-
-        if (arena.letterPressed('S')) {
-            movementDeltaY += 1;
-        }
-
-        if (arena.letterPressed('A')) {
-            movementDeltaX -= 1;
-        }
-
-        if (arena.letterPressed('D')) {
-            movementDeltaX += 1;
-        }
-
-        double movementMagnitude = Math.sqrt(Math.pow(movementDeltaX, 2) +
-                                             Math.pow(movementDeltaY, 2));
-
-        if (movementMagnitude == 0) {
-            return;
-        }
-
-        movementDeltaX /= movementMagnitude;
-        movementDeltaY /= movementMagnitude;
-
-        if (!arena.shiftPressed()) {
-            movementDeltaX *= speed;
-            movementDeltaY *= speed;
-        } else {
-            movementDeltaX *= speed * 4;
-            movementDeltaY *= speed * 4;
-        }
-
-        move(movementDeltaX, movementDeltaY);
-
-        gun.updatePosition();
-
-        gunPivot.setXPosition(positionX);
-        gunPivot.setYPosition(positionY);
+    if (arena.letterPressed('S')) {
+        movementDeltaY += 1;
     }
 
-    public double getPositionX() {
-        return positionX;
+    if (arena.letterPressed('A')) {
+        movementDeltaX -= 1;
     }
 
-    public void setPositionX(double x) {
-        positionX = x;
-        shape.setXPosition(positionX);
+    if (arena.letterPressed('D')) {
+        movementDeltaX += 1;
     }
 
-    public double getPositionY() {
-        return positionY;
+    double movementMagnitude =
+        Math.sqrt(Math.pow(movementDeltaX, 2) + Math.pow(movementDeltaY, 2));
+
+    if (movementMagnitude == 0) {
+        return;
     }
 
-    public void setPositionY(double y) {
-        positionY = y;
-        shape.setYPosition(positionY);
+    movementDeltaX /= movementMagnitude;
+    movementDeltaY /= movementMagnitude;
+
+    if (!arena.shiftPressed()) {
+        movementDeltaX *= speed;
+        movementDeltaY *= speed;
+    } else {
+        movementDeltaX *= speed * 4;
+        movementDeltaY *= speed * 4;
     }
 
-    public double getRotation() {
-        return rotation;
-    }
+    move(movementDeltaX, movementDeltaY);
 
-    public void setRotation(double rot) {
-        rotation = rot;
-    }
+    gun.updatePosition();
 
-    public void move(double x, double y) {
-        positionX += x;
-        positionY += y;
+    gunPivot.setXPosition(positionX);
+    gunPivot.setYPosition(positionY);
+}
 
-        shape.setXPosition(positionX);
-        shape.setYPosition(positionY);
-    }
+public double getPositionX() {
+    return positionX;
+}
 
-    public void rotate(double rot) {
-        rotation += rot;
-    }
+public void setPositionX(double x) {
+    positionX = x;
+    shape.setXPosition(positionX);
+}
 
-    public double getHealth() {
-        return health;
-    }
+public double getPositionY() {
+    return positionY;
+}
 
-    public void setHealth(double h) {
-        health = h;
-    }
+public void setPositionY(double y) {
+    positionY = y;
+    shape.setYPosition(positionY);
+}
 
-    public void damage(double d) {
-        health -= d;
+public double getRotation() {
+    return rotation;
+}
 
-        if (health < 0) {
-            health = 0;
-        }
-    }
+public void setRotation(double rot) {
+    rotation = rot;
+}
 
-    public Ball getShape() {
-        return shape;
+public void move(double x, double y) {
+    positionX += x;
+    positionY += y;
+
+    shape.setXPosition(positionX);
+    shape.setYPosition(positionY);
+}
+
+public void rotate(double rot) {
+    rotation += rot;
+}
+
+public double getHealth() {
+    return health;
+}
+
+public void setHealth(double h) {
+    health = h;
+}
+
+public void damage(double d) {
+    health -= d;
+
+    if (health < 0) {
+        health = 0;
     }
 }
->>>>>>> main
+
+public Ball getShape() {
+    return shape;
+}
+}
