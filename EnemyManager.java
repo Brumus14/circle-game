@@ -13,7 +13,7 @@ public class EnemyManager {
 
     private Player getNearestPlayer(Enemy enemy) {
         // assume nearest player is first player
-        Player nearestPlayer = players.getFirst();
+        Player nearestPlayer = players.get(0);
 
         // get the distance to this player
         double shortDist = getDistance(nearestPlayer, enemy);
