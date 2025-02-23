@@ -347,12 +347,12 @@ public class GameArena extends JPanel
         synchronized (this) {
             if (things.size() > 100000) {
                 System.out.println("\n\n");
-                System.out.println(" ****************************************" +
-                                   "***************** ");
-                System.out.println(" ***** Only 100000 Objects Supported per " +
-                                   "Game Arena! ***** ");
-                System.out.println(" ****************************************" +
-                                   "***************** ");
+                System.out.println(" ****************************************"
+                                   + "***************** ");
+                System.out.println(" ***** Only 100000 Objects Supported per "
+                                   + "Game Arena! ***** ");
+                System.out.println(" ****************************************"
+                                   + "***************** ");
                 System.out.println("\n");
                 System.out.println("-- Joe\n\n");
 
@@ -1433,5 +1433,4 @@ public class GameArena extends JPanel
         public int getMousePositionY() {
             return mouseY;
         }
->>>>>>> main
     }

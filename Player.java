@@ -1,160 +1,143 @@
 public class Player {
-    Ball sprite;
-    int health;
+    private double positionX;
+    private double positionY;
+    private double speed;
+    private double rotation = 0;
+    private double health;
+    private GameArena arena;
+    private Ball shape;
+    private Ball gunPivot;
+    private Gun gun;
 
-    public Player(Ball sprite, int health) {
-        this.sprite = sprite;
-        this.health = health;
+    // maybe make separate gun class
+    public Player(GameArena a, double posX, double posY, double s, double h) {
+        positionX = posX;
+        positionY = posY;
+        speed = s;
+        health = h;
+        arena = a;
+
+        shape = new Ball(positionX, positionY, 80, "blue");
+        arena.addBall(shape);
+
+        gun = new Gun(arena, this, 10, 0.2);
+
+        gunPivot = new Ball(positionX, positionY, 20, "grey");
+        arena.addBall(gunPivot);
     }
 
-    public Ball getSprite() {
-        return sprite;
+    public void update() {
+        gun.updateBullets();
+        handleInput();
     }
 
-    public void damage(int damageTaken) {
-        health -= damageTaken;
-    }
-}
+    public void handleInput() {
+        if (arena.leftMousePressed()) {
+            gun.shoot();
+        }
 
-private double positionX;
-private double positionY;
-private double speed;
-private double rotation = 0;
-private double health;
-private GameArena arena;
-private Ball shape;
-private Ball gunPivot;
-private Gun gun;
+        gun.updateRotation();
 
-// maybe make separate gun class
-public Player(GameArena a, double posX, double posY, double s, double h) {
-    positionX = posX;
-    positionY = posY;
-    speed = s;
-    health = h;
-    arena = a;
+        double movementDeltaX = 0;
+        double movementDeltaY = 0;
 
-    shape = new Ball(positionX, positionY, 80, "blue");
-    arena.addBall(shape);
+        if (arena.letterPressed('W')) {
+            movementDeltaY -= 1;
+        }
 
-    gun = new Gun(arena, this, 10, 0.2);
+        if (arena.letterPressed('S')) {
+            movementDeltaY += 1;
+        }
 
-    gunPivot = new Ball(positionX, positionY, 20, "grey");
-    arena.addBall(gunPivot);
-}
+        if (arena.letterPressed('A')) {
+            movementDeltaX -= 1;
+        }
 
-public void update() {
-    gun.updateBullets();
-    handleInput();
-}
+        if (arena.letterPressed('D')) {
+            movementDeltaX += 1;
+        }
 
-public void handleInput() {
-    if (arena.leftMousePressed()) {
-        gun.shoot();
-    }
+        double movementMagnitude = Math.sqrt(Math.pow(movementDeltaX, 2) +
+                                             Math.pow(movementDeltaY, 2));
 
-    gun.updateRotation();
+        if (movementMagnitude == 0) {
+            return;
+        }
 
-    double movementDeltaX = 0;
-    double movementDeltaY = 0;
+        movementDeltaX /= movementMagnitude;
+        movementDeltaY /= movementMagnitude;
 
-    if (arena.letterPressed('W')) {
-        movementDeltaY -= 1;
-    }
+        if (!arena.shiftPressed()) {
+            movementDeltaX *= speed;
+            movementDeltaY *= speed;
+        } else {
+            movementDeltaX *= speed * 4;
+            movementDeltaY *= speed * 4;
+        }
 
-    if (arena.letterPressed('S')) {
-        movementDeltaY += 1;
+        move(movementDeltaX, movementDeltaY);
+
+        gun.updatePosition();
+
+        gunPivot.setXPosition(positionX);
+        gunPivot.setYPosition(positionY);
     }
 
-    if (arena.letterPressed('A')) {
-        movementDeltaX -= 1;
+    public double getPositionX() {
+        return positionX;
     }
 
-    if (arena.letterPressed('D')) {
-        movementDeltaX += 1;
+    public void setPositionX(double x) {
+        positionX = x;
+        shape.setXPosition(positionX);
     }
 
-    double movementMagnitude =
-        Math.sqrt(Math.pow(movementDeltaX, 2) + Math.pow(movementDeltaY, 2));
-
-    if (movementMagnitude == 0) {
-        return;
+    public double getPositionY() {
+        return positionY;
     }
 
-    movementDeltaX /= movementMagnitude;
-    movementDeltaY /= movementMagnitude;
-
-    if (!arena.shiftPressed()) {
-        movementDeltaX *= speed;
-        movementDeltaY *= speed;
-    } else {
-        movementDeltaX *= speed * 4;
-        movementDeltaY *= speed * 4;
+    public void setPositionY(double y) {
+        positionY = y;
+        shape.setYPosition(positionY);
     }
 
-    move(movementDeltaX, movementDeltaY);
-
-    gun.updatePosition();
-
-    gunPivot.setXPosition(positionX);
-    gunPivot.setYPosition(positionY);
-}
-
-public double getPositionX() {
-    return positionX;
-}
-
-public void setPositionX(double x) {
-    positionX = x;
-    shape.setXPosition(positionX);
-}
-
-public double getPositionY() {
-    return positionY;
-}
-
-public void setPositionY(double y) {
-    positionY = y;
-    shape.setYPosition(positionY);
-}
-
-public double getRotation() {
-    return rotation;
-}
-
-public void setRotation(double rot) {
-    rotation = rot;
-}
-
-public void move(double x, double y) {
-    positionX += x;
-    positionY += y;
-
-    shape.setXPosition(positionX);
-    shape.setYPosition(positionY);
-}
-
-public void rotate(double rot) {
-    rotation += rot;
-}
-
-public double getHealth() {
-    return health;
-}
-
-public void setHealth(double h) {
-    health = h;
-}
-
-public void damage(double d) {
-    health -= d;
-
-    if (health < 0) {
-        health = 0;
+    public double getRotation() {
+        return rotation;
     }
-}
 
-public Ball getShape() {
-    return shape;
-}
+    public void setRotation(double rot) {
+        rotation = rot;
+    }
+
+    public void move(double x, double y) {
+        positionX += x;
+        positionY += y;
+
+        shape.setXPosition(positionX);
+        shape.setYPosition(positionY);
+    }
+
+    public void rotate(double rot) {
+        rotation += rot;
+    }
+
+    public double getHealth() {
+        return health;
+    }
+
+    public void setHealth(double h) {
+        health = h;
+    }
+
+    public void damage(double d) {
+        health -= d;
+
+        if (health < 0) {
+            health = 0;
+        }
+    }
+
+    public Ball getShape() {
+        return shape;
+    }
 }
