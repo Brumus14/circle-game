@@ -64,7 +64,8 @@ public class Gun {
         for (Bullet bullet : bullets) {
             bullet.update();
 
-            if (bullet.getPositionX() < 0 || bullet.getPositionY() < 0) {
+            if (bullet.getPositionX() < 0 || bullet.getPositionX() > 1600 ||
+                bullet.getPositionY() < 0 || bullet.getPositionY() > 900) {
                 System.out.println("out");
                 arena.removeBall(bullet.getShape());
 
