@@ -26,7 +26,8 @@ public class EnemyManager {
             curPlayer = players.get(i);
             dist = getDistance(curPlayer, enemy);
 
-            // if this player is closer to the enemy set it as the nearest player
+            // if this player is closer to the enemy set it as the nearest
+            // player
             if (dist < shortDist) {
                 nearestPlayer = curPlayer;
                 shortDist = dist;
@@ -36,17 +37,19 @@ public class EnemyManager {
     }
 
     private double getDistance(Player player, Enemy enemy) {
-        double playerX = player.getSprite().getXPosition();
-        double playerY = player.getSprite().getYPosition();
+        double playerX = player.getShape().getXPosition();
+        double playerY = player.getShape().getYPosition();
 
         double enemyX = enemy.getEnemyX();
         double enemyY = enemy.getEnemyY();
 
         // a^2 + b^2 = c^2
-        return (Math.sqrt(Math.pow(playerX - enemyX, 2) + Math.pow(playerY - enemyY, 2)));
+        return (Math.sqrt(Math.pow(playerX - enemyX, 2) +
+                          Math.pow(playerY - enemyY, 2)));
     }
 
-    // call the move function of each enemy passing in the nearest player to focus
+    // call the move function of each enemy passing in the nearest player to
+    // focus
     public void moveEnemies() {
         Enemy curEnemy;
         Player nearestPlayer;
@@ -62,7 +65,7 @@ public class EnemyManager {
         for (Enemy enemy : enemies) {
             willMove = true;
             for (Player player : players) {
-                if(enemy.checkCollision(player)){
+                if (enemy.checkCollision(player)) {
                     willMove = false;
                 }
             }
@@ -70,11 +73,12 @@ public class EnemyManager {
         }
     }
 
-    private int[] createEnemyLocation(int xMax, int yMax, int distance, int radius) {
-        int xOut = (int) (Math.random() * (xMax + distance * 2)) - distance;
+    private int[] createEnemyLocation(int xMax, int yMax, int distance,
+                                      int radius) {
+        int xOut = (int)(Math.random() * (xMax + distance * 2)) - distance;
         int yOut;
         if (xOut < 0 || xOut > xMax) {
-            yOut = (int) (Math.random() * (yMax + distance * 2)) - distance;
+            yOut = (int)(Math.random() * (yMax + distance * 2)) - distance;
             if (yOut < 0) {
                 yOut -= radius;
             }
@@ -82,7 +86,7 @@ public class EnemyManager {
                 yOut += radius;
             }
         } else {
-            yOut = (int) (Math.random() * (distance * 2)) - distance;
+            yOut = (int)(Math.random() * (distance * 2)) - distance;
             if (yOut > 0) {
                 yOut += yMax + radius;
             } else {
@@ -96,12 +100,13 @@ public class EnemyManager {
             xOut += radius;
         }
 
-        return new int[]{xOut, yOut};
+        return new int[] {xOut, yOut};
     }
 
     // create a new enemy within the area provided
     public void createEnemy(int xMax, int yMax, int distance, double diameter) {
-        int[] enemyLoc = createEnemyLocation(xMax, yMax, distance, (int) diameter / 2);
+        int[] enemyLoc =
+            createEnemyLocation(xMax, yMax, distance, (int)diameter / 2);
         Enemy newEnemy = new Enemy(enemyLoc[0], enemyLoc[1], diameter);
         enemies.add(newEnemy);
         arena.addBall(newEnemy.getSprite());
