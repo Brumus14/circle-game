@@ -3,8 +3,6 @@ public class Bullet {
     private double positionY;
     private double velocityX;
     private double velocityY;
-    // private double size;
-    // private String colour;
     private Ball shape;
     private GameArena arena;
 
@@ -27,5 +25,17 @@ public class Bullet {
 
         shape.setXPosition(positionX);
         shape.setYPosition(positionY);
+    }
+
+    public double getPositionX() {
+        return positionX;
+    }
+
+    public double getPositionY() {
+        return positionY;
+    }
+
+    public Ball getShape() {
+        return shape;
     }
 }

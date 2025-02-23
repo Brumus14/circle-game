@@ -59,9 +59,20 @@ public class Gun {
     }
 
     public void updateBullets() {
+        List<Bullet> bulletsToRemove = new ArrayList<>();
+
         for (Bullet bullet : bullets) {
             bullet.update();
+
+            if (bullet.getPositionX() < 0 || bullet.getPositionY() < 0) {
+                System.out.println("out");
+                arena.removeBall(bullet.getShape());
+
+                bulletsToRemove.add(bullet);
+            }
         }
+
+        bullets.removeAll(bulletsToRemove);
     }
 
     public List<Bullet> getBullets() {
