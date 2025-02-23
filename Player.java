@@ -140,4 +140,8 @@ public class Player {
     public Ball getShape() {
         return shape;
     }
+
+    public Gun getGun() {
+        return gun;
+    }
 }

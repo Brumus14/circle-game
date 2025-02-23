@@ -63,4 +63,8 @@ public class Gun {
             bullet.update();
         }
     }
+
+    public List<Bullet> getBullets() {
+        return bullets;
+    }
 }
