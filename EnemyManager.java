@@ -139,7 +139,7 @@ public class EnemyManager {
     private void removeBalls(){
         for(Enemy enem : enemRemove){
             arena.removeBall(enem.getShape());
-            enemies.remove(enemy);
+            enemies.remove(enem);
         }
         for(Bullet bullet : bulletRemove){
             bullet.destroy();
