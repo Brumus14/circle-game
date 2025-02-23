@@ -1,4 +1,22 @@
 public class Player {
+<<<<<<< HEAD
+    Ball sprite;
+    int health;
+
+    public Player(Ball sprite, int health) {
+        this.sprite = sprite;
+        this.health = health;
+    }
+
+    public Ball getSprite() {
+        return sprite;
+    }
+
+    public void damage(int damageTaken) {
+        health -= damageTaken;
+    }
+}
+=======
     private double positionX;
     private double positionY;
     private double speed;
@@ -141,3 +159,4 @@ public class Player {
         return shape;
     }
 }
+>>>>>>> main
