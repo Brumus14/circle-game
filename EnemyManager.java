@@ -3,6 +3,9 @@ import java.util.*;
 public class EnemyManager {
     private List<Player> players = new ArrayList<>();
     private List<Enemy> enemies = new ArrayList<>();
+    private List<Bullet> bullets = new ArrayList<>();
+    private List<Enemy> enemRemove = new ArrayList<>();
+    private List<Bullet> bulletRemove = new ArrayList<>();
     private GameArena arena;
 
     public EnemyManager(GameArena arena, Player playerOne) {
@@ -50,7 +53,7 @@ public class EnemyManager {
 
     // call the move function of each enemy passing in the nearest player to
     // focus
-    public void moveEnemies() {
+    private void moveEnemies() {
         Enemy curEnemy;
         Player nearestPlayer;
         for (Enemy enemy : enemies) {
@@ -60,7 +63,14 @@ public class EnemyManager {
         }
     }
 
-    public void checkCollisions() {
+    private void updateBullets(){
+        bullets = new ArrayList<>();
+        for (Player player : players){
+            bullets.addAll(player.getGun().getBullets());
+        }
+    }
+
+    private void checkCollisions() {
         boolean willMove = true;
         for (Enemy enemy : enemies) {
             willMove = true;
@@ -70,6 +80,16 @@ public class EnemyManager {
                 }
             }
             enemy.setMoving(willMove);
+
+            for (Bullet bullet : bullets){
+                if (enemy.checkCollision(bullet)) {
+                    enemy.health--;
+                    if(enemy.health < 0){
+                        enemRemove.add(enemy);
+                        bulletRemove.add(bullet);
+                    }
+                }
+            }
         }
     }
 
@@ -104,15 +124,32 @@ public class EnemyManager {
     }
 
     // create a new enemy within the area provided
-    public void createEnemy(int xMax, int yMax, int distance, double diameter) {
+    public void createEnemy(int xMax, int yMax, int distance, double diameter, int health) {
         int[] enemyLoc =
             createEnemyLocation(xMax, yMax, distance, (int)diameter / 2);
-        Enemy newEnemy = new Enemy(enemyLoc[0], enemyLoc[1], diameter);
+        Enemy newEnemy = new Enemy(enemyLoc[0], enemyLoc[1], diameter, health);
         enemies.add(newEnemy);
-        arena.addBall(newEnemy.getSprite());
+        arena.addBall(newEnemy.getShape());
     }
 
     public void addPlayer(Player newPlayer) {
         players.add(newPlayer);
+    }
+
+    private void removeBalls(){
+        for(Enemy enem : enemRemove){
+            arena.removeBall(enem.getShape());
+            enemies.remove(enemy);
+        }
+        for(Bullet bullet : bulletRemove){
+            bullet.destroy();
+        }
+    }
+
+    public void update(){
+        updateBullets();
+        moveEnemies();
+        checkCollisions();
+        removeBalls();
     }
 }

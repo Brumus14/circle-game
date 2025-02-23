@@ -9,14 +9,13 @@ public class Game {
 
         while (true) {
             if(frames == 100){
-                enemMan.createEnemy(1920, 1080, 50, 80);
+                enemMan.createEnemy(1920, 1080, 50, 80, 1);
                 frames = 0;
             }
             arena.pause();
 
             p.update();
-            enemMan.moveEnemies();
-            enemMan.checkCollisions();
+            enemMan.update();
             frames++;
         }
     }
