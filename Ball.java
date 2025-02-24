@@ -3,7 +3,7 @@
  * This class represents a Ball object. When combined with the GameArena class,
  * instances of the Ball class can be displayed on the screen.
  */
-public class Ball {
+public class Ball extends Shape {
     // The following instance variables define the
     // information needed to represent a Ball
     // Feel free to more instance variables if you think it will

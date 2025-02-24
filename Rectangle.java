@@ -6,7 +6,7 @@
 class can be displayed on the screen.
 */
 
-public class Rectangle {
+public class Rectangle extends Shape {
     // The following instance variables define the
     // information needed to represent a Rectangle
     // Feel free to more instance variables if you think it will
@@ -81,12 +81,22 @@ public class Rectangle {
         return xPosition;
     }
 
+    public double getXOriginPosition() {
+        return xPosition + xOrigin * Math.cos(rotation) -
+            yOrigin * Math.sin(rotation);
+    }
+
     /**
      * Obtains the current position of this Rectangle.
      * @return the Y coordinate of this Rectangle within the GameArena.
      */
     public double getYPosition() {
         return yPosition;
+    }
+
+    public double getYOriginPosition() {
+        return yPosition + yOrigin * Math.sin(rotation) +
+            yOrigin * Math.cos(rotation);
     }
 
     /**

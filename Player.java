@@ -6,7 +6,6 @@ public class Player {
     private double health;
     private GameArena arena;
     private Ball shape;
-    private Ball gunPivot;
     private Gun gun;
 
     // maybe make separate gun class
@@ -21,9 +20,6 @@ public class Player {
         arena.addBall(shape);
 
         gun = new Gun(arena, this, 10, 0.2);
-
-        gunPivot = new Ball(positionX, positionY, 20, "grey");
-        arena.addBall(gunPivot);
     }
 
     public void update() {
@@ -78,9 +74,6 @@ public class Player {
         move(movementDeltaX, movementDeltaY);
 
         gun.updatePosition();
-
-        gunPivot.setXPosition(positionX);
-        gunPivot.setYPosition(positionY);
     }
 
     public double getPositionX() {

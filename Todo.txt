@@ -1,0 +1,13 @@
+gun upgrade system
+    way to upgrade
+    gun change shape
+    bullet speed
+    bullet damage
+    bullet ability (stun maybe)
+    shoot cooldown
+    gun barrels
+
+display text info:
+    current round
+    health
+    upgrades
