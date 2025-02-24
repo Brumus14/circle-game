@@ -3,12 +3,14 @@ public class Game {
         GameArena arena = new GameArena(1600, 900);
 
         Player p = new Player(arena, 0, 0, 5, 100);
-        EnemyManager enemMan = new EnemyManager(arena, p);
+        EnemyManager enemMan = new EnemyManager(arena, p, 1600, 900);
+        WaveManager waveMan = new WaveManager(enemMan);
         int frames = 0;
 
         while (true) {
             if (frames == 100) {
-                enemMan.createEnemy(1920, 1080, 50, 80, 1);
+                enemMan.createAssassin();
+                enemMan.createTank();
                 frames = 0;
             }
             arena.pause();

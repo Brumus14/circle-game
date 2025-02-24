@@ -7,11 +7,16 @@ public class EnemyManager {
     private List<Enemy> enemRemove = new ArrayList<>();
     private List<Bullet> bulletRemove = new ArrayList<>();
     private GameArena arena;
+    private int xArena;
+    private int yArena;
+    private int distOut = 50;
 
-    public EnemyManager(GameArena arena, Player playerOne) {
+    public EnemyManager(GameArena arena, Player playerOne, int x, int y) {
         this.arena = arena;
         // the enemy manager requires at least one player to function
         players.add(playerOne);
+        xArena = x;
+        yArena = y;
     }
 
     private Player getNearestPlayer(Enemy enemy) {
@@ -84,31 +89,31 @@ public class EnemyManager {
             for (Bullet bullet : bullets){
                 if (enemy.checkCollision(bullet)) {
                     enemy.health--;
-                    if(enemy.health < 0){
+                    if(enemy.health <= 0){
                         enemRemove.add(enemy);
-                        bulletRemove.add(bullet);
                     }
+                    bulletRemove.add(bullet);
                 }
             }
         }
     }
 
-    private int[] createEnemyLocation(int xMax, int yMax, int distance,
+    private int[] createEnemyLocation(int distance,
                                       int radius) {
-        int xOut = (int)(Math.random() * (xMax + distance * 2)) - distance;
+        int xOut = (int)(Math.random() * (xArena + distance * 2)) - distance;
         int yOut;
-        if (xOut < 0 || xOut > xMax) {
-            yOut = (int)(Math.random() * (yMax + distance * 2)) - distance;
+        if (xOut < 0 || xOut > xArena) {
+            yOut = (int)(Math.random() * (yArena + distance * 2)) - distance;
             if (yOut < 0) {
                 yOut -= radius;
             }
-            if (yOut > yMax) {
+            if (yOut > yArena) {
                 yOut += radius;
             }
         } else {
             yOut = (int)(Math.random() * (distance * 2)) - distance;
             if (yOut > 0) {
-                yOut += yMax + radius;
+                yOut += yArena + radius;
             } else {
                 yOut -= radius;
             }
@@ -116,20 +121,11 @@ public class EnemyManager {
         if (xOut < 0) {
             xOut -= radius;
         }
-        if (xOut > xMax) {
+        if (xOut > xArena) {
             xOut += radius;
         }
 
         return new int[] {xOut, yOut};
-    }
-
-    // create a new enemy within the area provided
-    public void createEnemy(int xMax, int yMax, int distance, double diameter, int health) {
-        int[] enemyLoc =
-            createEnemyLocation(xMax, yMax, distance, (int)diameter / 2);
-        Enemy newEnemy = new Enemy(enemyLoc[0], enemyLoc[1], diameter, health);
-        enemies.add(newEnemy);
-        arena.addBall(newEnemy.getShape());
     }
 
     public void addPlayer(Player newPlayer) {
@@ -151,5 +147,27 @@ public class EnemyManager {
         moveEnemies();
         checkCollisions();
         removeBalls();
+    }
+
+    public void updateArenaSize(int xMax, int yMax){
+        xArena = xMax;
+        yArena = yMax;
+    }
+
+    // create a new enemy within the area provided
+    public void createEnemy(int distance, double diameter, int health, int speed, String colour) {
+        int[] enemyLoc =
+                createEnemyLocation(distance, (int)diameter / 2);
+        Enemy newEnemy = new Enemy(enemyLoc[0], enemyLoc[1], diameter, health, speed, colour);
+        enemies.add(newEnemy);
+        arena.addBall(newEnemy.getShape());
+    }
+
+    public void createAssassin() {
+        createEnemy(distOut, 40, 1, 3, "GREEN");
+    }
+
+    public void createTank() {
+        createEnemy(distOut, 160, 5, 1, "RED");
     }
 }

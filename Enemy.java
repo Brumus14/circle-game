@@ -3,10 +3,12 @@ public class Enemy {
     private int enemyPower = 1;
     private boolean moving;
     public int health;
+    private int speed;
 
-    public Enemy(double x, double y, double diameter, int health) {
-        sprite = new Ball(x, y, diameter, "RED");
+    public Enemy(double x, double y, double diameter, int health, int speed, String colour) {
+        sprite = new Ball(x, y, diameter, colour);
         this.health = health;
+        this.speed = speed;
     }
 
     public Ball getShape() {
@@ -37,8 +39,8 @@ public class Enemy {
             // a^2 + b^2 = c^2
             double length = (Math.sqrt(Math.pow(playerX - enemyX, 2) +
                                        Math.pow(playerY - enemyY, 2)));
-            double normalX = enemyX + ((playerX - enemyX) / length);
-            double normalY = enemyY + ((playerY - enemyY) / length);
+            double normalX = enemyX + ((playerX - enemyX) / length) * speed;
+            double normalY = enemyY + ((playerY - enemyY) / length) * speed;
 
             sprite.setXPosition(normalX);
             sprite.setYPosition(normalY);
