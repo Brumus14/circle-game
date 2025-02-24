@@ -1,15 +1,15 @@
 import java.util.*;
 
 public class EnemyManager {
-    private List<Player> players = new ArrayList<>();
-    private List<Enemy> enemies = new ArrayList<>();
+    private final List<Player> players = new ArrayList<>();
+    private final List<Enemy> enemies = new ArrayList<>();
     private List<Bullet> bullets = new ArrayList<>();
-    private List<Enemy> enemRemove = new ArrayList<>();
-    private List<Bullet> bulletRemove = new ArrayList<>();
-    private GameArena arena;
+    private final List<Enemy> enemRemove = new ArrayList<>();
+    private final List<Bullet> bulletRemove = new ArrayList<>();
+    private final GameArena arena;
     private int xArena;
     private int yArena;
-    private int distOut = 50;
+    private final int distOut = 50;
 
     public EnemyManager(GameArena arena, Player playerOne, int x, int y) {
         this.arena = arena;
@@ -76,7 +76,7 @@ public class EnemyManager {
     }
 
     private void checkCollisions() {
-        boolean willMove = true;
+        boolean willMove;
         for (Enemy enemy : enemies) {
             willMove = true;
             for (Player player : players) {
@@ -155,19 +155,23 @@ public class EnemyManager {
     }
 
     // create a new enemy within the area provided
-    public void createEnemy(int distance, double diameter, int health, int speed, String colour) {
+    public void createEnemy(int distance, double diameter, int health, double speed, String colour, int power) {
         int[] enemyLoc =
                 createEnemyLocation(distance, (int)diameter / 2);
-        Enemy newEnemy = new Enemy(enemyLoc[0], enemyLoc[1], diameter, health, speed, colour);
+        Enemy newEnemy = new Enemy(enemyLoc[0], enemyLoc[1], diameter, health, speed, colour, power);
         enemies.add(newEnemy);
         arena.addBall(newEnemy.getShape());
     }
 
     public void createAssassin() {
-        createEnemy(distOut, 40, 1, 3, "GREEN");
+        createEnemy(distOut, 40, 1, 3, "GREEN", 5);
     }
 
     public void createTank() {
-        createEnemy(distOut, 160, 5, 1, "RED");
+        createEnemy(distOut, 160, 5, 1, "RED", 3);
+    }
+
+    public void createBasic() {
+        createEnemy(distOut, 80, 2, 1.5, "ORANGE", 1);
     }
 }

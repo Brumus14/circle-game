@@ -1,14 +1,15 @@
 public class Enemy {
-    private Ball sprite;
-    private int enemyPower = 1;
+    private final Ball sprite;
+    private final int power;
     private boolean moving;
     public int health;
-    private int speed;
+    private final double speed;
 
-    public Enemy(double x, double y, double diameter, int health, int speed, String colour) {
+    public Enemy(double x, double y, double diameter, int health, double speed, String colour, int power) {
         sprite = new Ball(x, y, diameter, colour);
         this.health = health;
         this.speed = speed;
+        this.power = power;
     }
 
     public Ball getShape() {
@@ -49,7 +50,7 @@ public class Enemy {
 
     public boolean checkCollision(Player player) {
         if (sprite.collides(player.getShape())) {
-            player.damage(enemyPower);
+            player.damage(power);
             return true;
         }
         return false;

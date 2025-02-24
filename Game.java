@@ -11,6 +11,7 @@ public class Game {
             if (frames == 100) {
                 enemMan.createAssassin();
                 enemMan.createTank();
+                enemMan.createBasic();
                 frames = 0;
             }
             arena.pause();
