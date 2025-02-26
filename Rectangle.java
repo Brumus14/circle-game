@@ -18,9 +18,9 @@ public class Rectangle extends Shape {
     private double height;    // The height of this Rectangle
     private int layer;        // The layer this Rectangle is on.
     private String colour;    // The colour of this Rectangle
-    private double rotation;
-    private double xOrigin;
-    private double yOrigin;
+    private double rotation = 0;
+    private double xOrigin = 0; // origin offset
+    private double yOrigin = 0;
 
     // Permissable colours are:
     // BLACK, BLUE, CYAN, DARKGREY, GREY,
@@ -81,22 +81,12 @@ public class Rectangle extends Shape {
         return xPosition;
     }
 
-    public double getXOriginPosition() {
-        return xPosition + xOrigin * Math.cos(rotation) -
-            yOrigin * Math.sin(rotation);
-    }
-
     /**
      * Obtains the current position of this Rectangle.
      * @return the Y coordinate of this Rectangle within the GameArena.
      */
     public double getYPosition() {
         return yPosition;
-    }
-
-    public double getYOriginPosition() {
-        return yPosition + yOrigin * Math.sin(rotation) +
-            yOrigin * Math.cos(rotation);
     }
 
     /**
@@ -154,7 +144,7 @@ public class Rectangle extends Shape {
     }
 
     public void setXOriginRelative(double o) {
-        xOrigin = xPosition + width * o;
+        xOrigin = width * o;
     }
 
     public double getYOrigin() {
@@ -166,7 +156,17 @@ public class Rectangle extends Shape {
     }
 
     public void setYOriginRelative(double o) {
-        yOrigin = yPosition + height * o;
+        yOrigin = height * o;
+    }
+
+    public double getXOriginPosition() {
+        return xPosition + xOrigin * Math.cos(Math.toRadians(rotation)) -
+            yOrigin * Math.sin(Math.toRadians(rotation));
+    }
+
+    public double getYOriginPosition() {
+        return yPosition + xOrigin * Math.sin(Math.toRadians(rotation)) +
+            yOrigin * Math.cos(Math.toRadians(rotation));
     }
 
     /**

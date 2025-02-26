@@ -48,17 +48,14 @@ public class Gun {
                 double directionX = -Math.sin(Math.toRadians(rotation));
                 double directionY = Math.cos(Math.toRadians(rotation));
 
-                System.out.print(point.getBarrel().getXPosition());
-                System.out.println(point.getBarrel().getXOriginPosition());
-
-                Bullet bullet =
-                    new Bullet(arena, this,
-                               point.getBarrel().getXOriginPosition() +
-                                   directionX * point.getOffset(),
-                               point.getBarrel().getYOriginPosition() +
-                                   directionY * point.getOffset(),
-                               directionX * bulletSpeed,
-                               directionY * bulletSpeed, 20, "red");
+                Bullet bullet = new Bullet(
+                    arena, this,
+                    point.getBarrel().getXOriginPosition() +
+                        directionX * point.getOffset() - directionY * 10,
+                    point.getBarrel().getYOriginPosition() +
+                        directionY * point.getOffset() + directionX * 10,
+                    directionX * bulletSpeed, directionY * bulletSpeed, 20,
+                    "red");
                 bullets.add(bullet);
 
                 lastShotTime = currentTime;
