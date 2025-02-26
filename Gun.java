@@ -48,8 +48,8 @@ public class Gun {
                 double directionX = -Math.sin(Math.toRadians(rotation));
                 double directionY = Math.cos(Math.toRadians(rotation));
 
-                System.out.print(point.getBarrel().getXPosition());
-                System.out.println(point.getBarrel().getXOriginPosition());
+                /*System.out.print(point.getBarrel().getXPosition());
+                System.out.println(point.getBarrel().getXOriginPosition());*/
 
                 Bullet bullet =
                     new Bullet(arena, this,

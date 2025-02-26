@@ -10,6 +10,7 @@ public class EnemyManager {
     private int xArena;
     private int yArena;
     private final int distOut = 50;
+    public int enemiesKilled;
 
     public EnemyManager(GameArena arena, Player playerOne, int x, int y) {
         this.arena = arena;
@@ -59,9 +60,10 @@ public class EnemyManager {
     // call the move function of each enemy passing in the nearest player to
     // focus
     private void moveEnemies() {
+        List<Enemy> curEnemies = new ArrayList<>(enemies);
         Enemy curEnemy;
         Player nearestPlayer;
-        for (Enemy enemy : enemies) {
+        for (Enemy enemy : curEnemies) {
             curEnemy = enemy;
             nearestPlayer = getNearestPlayer(curEnemy);
             curEnemy.move(nearestPlayer);
@@ -77,7 +79,8 @@ public class EnemyManager {
 
     private void checkCollisions() {
         boolean willMove;
-        for (Enemy enemy : enemies) {
+        List<Enemy> curEnemies = new ArrayList<>(enemies);
+        for (Enemy enemy : curEnemies) {
             willMove = true;
             for (Player player : players) {
                 if (enemy.checkCollision(player)) {
@@ -89,10 +92,12 @@ public class EnemyManager {
             for (Bullet bullet : bullets){
                 if (enemy.checkCollision(bullet)) {
                     enemy.health--;
-                    if(enemy.health <= 0){
+                    if(enemy.health <= 0 && !enemRemove.contains(enemy)){
                         enemRemove.add(enemy);
                     }
-                    bulletRemove.add(bullet);
+                    if(!bulletRemove.contains(bullet)){
+                        bulletRemove.add(bullet);
+                    }
                 }
             }
         }
@@ -136,10 +141,13 @@ public class EnemyManager {
         for(Enemy enem : enemRemove){
             arena.removeBall(enem.getShape());
             enemies.remove(enem);
+            enemiesKilled++;
         }
+        enemRemove.clear();
         for(Bullet bullet : bulletRemove){
             bullet.destroy();
         }
+        bulletRemove.clear();
     }
 
     public void update(){
